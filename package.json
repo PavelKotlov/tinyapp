@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/PavelKotlov/tinyapp/issues"
   },
-  "homepage": "https://github.com/PavelKotlov/tinyapp#readme"
+  "homepage": "https://github.com/PavelKotlov/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
