@@ -12,6 +12,12 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// Global Variables
+const generateRandomString = (length) => {
+  // Converting a random number between 0 & 1 to an alphanumeric string using redix base 16, for hexadecimal, as an argument in the object method .toString(16), then retreving the elements between positions 2 and 8, not inclusive.
+  return Math.random().toString(16).slice(2, length + 2)
+};
+
 // Route handlers
 app.get("/urls", (req, res) => {
   const templateVars = {
