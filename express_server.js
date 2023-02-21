@@ -42,6 +42,12 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+app.get("/u/:id", (req, res) => {
+  const id = req.params.id;
+  const longURL = urlDatabase[id];
+  res.redirect(longURL);
+});
+
 app.post("/urls", (req, res) => {
   const randomId = generateRandomString(6);
   if (req.body.longURL) {
