@@ -43,8 +43,11 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);
-  res.send("Ok");
+  const randomId = generateRandomString(6);
+  if (req.body.longURL) {
+    urlDatabase[randomId] = req.body.longURL;
+    res.redirect(`/urls/${randomId}`);
+  }
 });
 
 app.listen(PORT, () => {
