@@ -83,14 +83,17 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-// Login post request
+// Login button post request
 app.post("/login", (req, res) => {
   if (req.body.username) {
     res.cookie("username", req.body.username);
-  } else {
-    res.cookie("username", undefined);
   }
+  res.redirect("/urls")
+});
 
+// Logout button post request
+app.post("/logout", (req, res) => {
+  res.clearCookie("username")
   res.redirect("/urls")
 });
 
