@@ -19,6 +19,21 @@
         <p class="card-text">
           Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
         </p>
+        <form class="card-inline" action="/urls/<%= id %>/edit" method="POST">
+          <input 
+            class="card-text" 
+            name="longURL" 
+            type="text" 
+            placeholder="http://"
+          />
+          <input 
+            class="card-text" 
+            name="id" 
+            type="hidden" 
+            value="<%= id%>"
+          />
+          <button type="submit" class="btn btn-success">Edit</button>
+        </form>
       </div>
       <div class="card-footer text-muted"></div>
     </div>
