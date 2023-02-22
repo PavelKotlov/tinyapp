@@ -20,14 +20,19 @@
     </div>
     <form class="form-inline" action="/login" method="POST">
       <div class="form-group mb-2">
-        <input
-          class="form-control"
-          type="text"
-          name="username"
-          placeholder="username"
-          style="width: 150px; margin: 1e;"
-        />
-        <button style="margin-left:10px" type="submit" class="btn btn-success">Login</button>
+        <% if (username === "undefined") { %>
+          <input
+            class="form-control"
+            type="text"
+            name="username"
+            placeholder="username"
+            style="width: 150px; margin: 1e;"
+          />
+          <button style="margin-left:10px" type="submit" class="btn btn-success">Login</button>
+        <% } else { %>
+          <label style="color:white">Welcome, <%=username %>!</label>
+          <button style="margin-left:10px" type="submit" class="btn btn-success">Logout</button>
+        <% }%>
       </div>
     </form>
   </nav>
