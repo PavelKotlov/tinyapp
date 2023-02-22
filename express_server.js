@@ -1,12 +1,12 @@
 const express = require("express");
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = 8080; // default port 8080
 
 // Execute app requirements
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser())
+app.use(cookieParser());
 
 // App data
 const urlDatabase = {
@@ -17,7 +17,7 @@ const urlDatabase = {
 // Global Variables
 const generateRandomString = (length) => {
   // Converting a random number between 0 & 1 to an alphanumeric string using redix base 16, for hexadecimal, as an argument in the object method .toString(16), then retreving the elements between positions 2 and 8, not inclusive.
-  return Math.random().toString(16).slice(2, length + 2)
+  return Math.random().toString(16).slice(2, length + 2);
 };
 
 // Route handlers
@@ -38,7 +38,7 @@ app.get("/urls/:id", (req, res) => {
     id: id,
     longURL: urlDatabase[id]
   };
-  res.render("urls_show", templateVars)
+  res.render("urls_show", templateVars);
 });
 
 // Redirect link to external resource get request
@@ -67,7 +67,7 @@ app.post("/urls/:id", (req, res) => {
     longURL: urlDatabase[id]
   };
 
-  res.render("urls_show", templateVars)
+  res.render("urls_show", templateVars);
 });
 
 // Edit URL button post request
@@ -88,13 +88,13 @@ app.post("/login", (req, res) => {
   if (req.body.username) {
     res.cookie("username", req.body.username);
   }
-  res.redirect("/urls")
+  res.redirect("/urls");
 });
 
 // Logout button post request
 app.post("/logout", (req, res) => {
-  res.clearCookie("username")
-  res.redirect("/urls")
+  res.clearCookie("username");
+  res.redirect("/urls");
 });
 
 app.listen(PORT, () => {
