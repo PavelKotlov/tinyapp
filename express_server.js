@@ -19,6 +19,8 @@ const generateRandomString = (length) => {
 };
 
 // Route handlers
+
+// Direct URL get requests
 app.get("/urls", (req, res) => {
   res.render("urls_index", { urls: urlDatabase });
 });
@@ -29,21 +31,22 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
-
+  console.log("urls+:id", id);
   const templateVars = {
     id: id,
     longURL: urlDatabase[id]
   };
-
-  res.render("urls_show", templateVars);
+  res.render("urls_show", templateVars)
 });
 
+// Redirect link to external resource get request
 app.get("/u/:id", (req, res) => {
   const id = req.params.id;
   const longURL = urlDatabase[id];
   res.redirect(longURL);
 });
 
+// Create New URL button post request
 app.post("/urls", (req, res) => {
   const randomId = generateRandomString(6);
   if (req.body.longURL) {
@@ -52,6 +55,25 @@ app.post("/urls", (req, res) => {
   }
 });
 
+// Edit Main button post request
+app.post("/urls/:id", (req, res) => {
+  const id = req.params.id;
+
+  const templateVars = {
+    id: id,
+    longURL: urlDatabase[id]
+  };
+
+  res.render("urls_show", templateVars)
+});
+
+// Edit URL button post request
+app.post("/urls/:id/edit", (req, res) => {
+  urlDatabase[req.body.id] = req.body.longURL;
+  res.redirect(`/urls`);
+});
+
+// Delete button post request
 app.post("/urls/:id/delete", (req, res) => {
   const id = req.params.id;
   delete urlDatabase[id];
