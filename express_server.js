@@ -131,11 +131,22 @@ app.post("/urls/:shortURL_id/delete", (req, res) => {
 // POST /login
 app.post("/login", (req, res) => {
   const userLoginEmail = req.body.email;
+  const userLoginPassword = req.body.password;
   const userFound = getUserByEmail(userLoginEmail);
-  console.log(userFound);
-  if (userFound) {
-    res.cookie("user_id", userFound.id);
+
+  if (!userFound) {
+    res.statusCode = 403;
+    res.send("User not found. Please register new user.")
+    return;
   }
+
+  if (userFound.password !== userLoginPassword) {
+    res.statusCode = 403;
+    res.send("Invalid password. Please check your password details and try again.")
+    return;
+  }
+  
+  res.cookie("user_id", userFound.id);
   res.redirect("/urls");
 });
 // POST /logout
