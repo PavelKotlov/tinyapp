@@ -32,25 +32,37 @@ const generateRandomString = (length) => {
 
 // Direct URL get requests
 app.get("/urls", (req, res) => {
-  res.render("urls_index", { username: req.cookies["username"], urls: urlDatabase });
+  const user_id = req.cookies["user_id"];
+  
+  const templateVars = {
+    user: usersDatabase[user_id], 
+    urls: urlDatabase
+  }
+
+  res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new", { username: req.cookies["username"] });
+  const user_id = req.cookies["user_id"];
+  res.render("urls_new", { user: usersDatabase[user_id] });
 });
 
 app.get("/urls/:id", (req, res) => {
-  const id = req.params.id;
+  const shortURL_id = req.params.id;
+  const user_id = req.cookies["user_id"];
+  
   const templateVars = {
-    username: req.cookies["username"],
-    id: id,
+    user: usersDatabase[user_id],
+    id: shortURL_id,
     longURL: urlDatabase[id]
   };
+  
   res.render("urls_show", templateVars);
 });
 
 app.get("/register", (req, res) => {
-  res.render('registration_page', { username: req.cookies["username"] });
+  const user_id = req.cookies["user_id"];
+  res.render('registration_page', { user: usersDatabase[user_id] });
 });
 
 // Redirect link to external resource get request
