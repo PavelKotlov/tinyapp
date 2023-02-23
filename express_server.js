@@ -13,9 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // App data
-const usersDatabase = {
-  
-};
+const usersDatabase = {};
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -24,13 +22,15 @@ const urlDatabase = {
 
 // Global Variables
 const generateRandomString = (length) => {
-  // Converting a random number between 0 & 1 to an alphanumeric string using redix base 16, for hexadecimal, as an argument in the object method .toString(16), then retreving the elements between positions 2 and 8, not inclusive.
+  /* Convert random number into alphanumeric string using redix base 16. Return 
+  positions 2 - lenght + 2, not inclusive*/
   return Math.random().toString(16).slice(2, length + 2);
 };
 
 // Route handlers
+// GET Requests #################################
 
-// Direct URL get requests
+// GET /urls
 app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
   
@@ -41,38 +41,39 @@ app.get("/urls", (req, res) => {
 
   res.render("urls_index", templateVars);
 });
-
+// GET /urls/new
 app.get("/urls/new", (req, res) => {
   const user_id = req.cookies["user_id"];
   res.render("urls_new", { user: usersDatabase[user_id] });
 });
-
-app.get("/urls/:id", (req, res) => {
-  const shortURL_id = req.params.id;
+// GET /urls/:shortURL_id
+app.get("/urls/:shortURL_id", (req, res) => {
+  const shortURL_id = req.params.shortURL_id;
   const user_id = req.cookies["user_id"];
   
   const templateVars = {
     user: usersDatabase[user_id],
-    id: shortURL_id,
-    longURL: urlDatabase[id]
+    shortURL_id: shortURL_id,
+    longURL: urlDatabase[shortURL_id]
   };
   
   res.render("urls_show", templateVars);
 });
-
+// GET /u/:shortURL_id
+app.get("/u/:shortURL_id", (req, res) => {
+  const shortURL_id = req.params.shortURL_id;
+  const longURL = urlDatabase[shortURL_id];
+  res.redirect(longURL);
+});
+// GET /register
 app.get("/register", (req, res) => {
   const user_id = req.cookies["user_id"];
   res.render('registration_page', { user: usersDatabase[user_id] });
 });
 
-// Redirect link to external resource get request
-app.get("/u/:id", (req, res) => {
-  const id = req.params.id;
-  const longURL = urlDatabase[id];
-  res.redirect(longURL);
-});
+// POST Requests ################################
 
-// Create New URL button post request
+// POST /urls
 app.post("/urls", (req, res) => {
   const randomId = generateRandomString(6);
   if (req.body.longURL) {
@@ -80,47 +81,49 @@ app.post("/urls", (req, res) => {
     res.redirect(`/urls/${randomId}`);
   }
 });
-
-// Edit Main button post request
-app.post("/urls/:id", (req, res) => {
-  const id = req.params.id;
+// POST /urls/:shortURL_id
+app.post("/urls/:shortURL_id", (req, res) => {
+  const shortURL_id = req.params.shortURL_id;
+  const user_id = req.cookies["user_id"];
 
   const templateVars = {
-    username: req.cookies["username"],
-    id: id,
-    longURL: urlDatabase[id]
+    user: usersDatabase[user_id],
+    shortURL_id: shortURL_id,
+    longURL: urlDatabase[shortURL_id]
   };
 
   res.render("urls_show", templateVars);
 });
-
-// Edit URL button post request
-app.post("/urls/:id/edit", (req, res) => {
-  urlDatabase[req.body.id] = req.body.longURL;
+// POST /urls/:shortURL_id/edit
+app.post("/urls/:shortURL_id/edit", (req, res) => {
+  urlDatabase[req.body.shortURL_id] = req.body.longURL;
   res.redirect(`/urls`);
 });
-
-// Delete button post request
-app.post("/urls/:id/delete", (req, res) => {
-  const id = req.params.id;
-  delete urlDatabase[id];
+// POST /urls/:shortURL_id/delete
+app.post("/urls/:shortURL_id/delete", (req, res) => {
+  const shortURL_id = req.params.shortURL_id;
+  delete urlDatabase[shortURL_id];
   res.redirect("/urls");
 });
-
-// Login button post request
+// POST /login
 app.post("/login", (req, res) => {
-  if (req.body.username) {
-    res.cookie("username", req.body.username);
+  const userLoginEmail = req.body.email;
+  if (userLoginEmail) {
+    for (const userId in usersDatabase) {
+      if (usersDatabase[userId].email === userLoginEmail) {
+        res.cookie("user_id", usersDatabase[userId].id);
+        break;
+      }
+    }
   }
   res.redirect("/urls");
 });
-
-// Logout button post request
+// POST /logout
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
+  res.clearCookie("user_id");
   res.redirect("/urls");
 });
-
+// POST /register
 app.post("/register", (req, res) => {
   const userId = generateRandomString(8);
   const userParameters = {

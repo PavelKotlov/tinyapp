@@ -17,9 +17,9 @@
       <div class="card-body">
         <h5 class="card-title">TinyURL for: <%= longURL %></h5>
         <p class="card-text">
-          Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
+          Short URL ID: <a href="/u/<%= shortURL_id %>"><%= shortURL_id %></a>
         </p>
-        <form class="card-inline" action="/urls/<%= id %>/edit" method="POST">
+        <form class="card-inline" action="/urls/<%= shortURL_id %>/edit" method="POST">
           <label>New URL:</label>
           <input 
             class="card-text" 
@@ -29,9 +29,9 @@
           />
           <input 
             class="card-text" 
-            name="id" 
+            name="shortURL_id" 
             type="hidden" 
-            value="<%= id%>"
+            value="<%= shortURL_id%>"
           />
           <button type="submit" class="btn btn-success">Edit</button>
         </form>
