@@ -145,14 +145,14 @@ app.post("/login", (req, res) => {
     res.send("Invalid password. Please check your password details and try again.")
     return;
   }
-  
+
   res.cookie("user_id", userFound.id);
   res.redirect("/urls");
 });
 // POST /logout
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
-  res.redirect("/urls");
+  res.redirect("/login");
 });
 // POST /register
 app.post("/register", (req, res) => {
