@@ -4,13 +4,16 @@ const morgan = require("morgan");
 const app = express();
 const PORT = 8080; // default port 8080
 
+
 // Config
 app.set("view engine", "ejs");
+
 
 // Middleware
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 
 // App data
 const usersDatabase = {};
@@ -20,12 +23,27 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+
 // Global Variables
 const generateRandomString = (length) => {
   /* Convert random number into alphanumeric string using redix base 16. Return 
   positions 2 - lenght + 2, not inclusive*/
   return Math.random().toString(16).slice(2, length + 2);
 };
+
+
+// Helper Functions
+const userLookUp = (email) => {
+  for (const userId in usersDatabase) {
+    if (usersDatabase[userId].email === email) {
+      return usersDatabase[userId];
+    }
+  }
+
+  return null;
+};
+
+
 
 // Route handlers
 // GET Requests #################################
@@ -108,13 +126,9 @@ app.post("/urls/:shortURL_id/delete", (req, res) => {
 // POST /login
 app.post("/login", (req, res) => {
   const userLoginEmail = req.body.email;
-  if (userLoginEmail) {
-    for (const userId in usersDatabase) {
-      if (usersDatabase[userId].email === userLoginEmail) {
-        res.cookie("user_id", usersDatabase[userId].id);
-        break;
-      }
-    }
+  const userFound = userLookUp(userLoginEmail);
+  if (userFound) {
+    res.cookie("user_id", userFound.id);
   }
   res.redirect("/urls");
 });
@@ -125,18 +139,33 @@ app.post("/logout", (req, res) => {
 });
 // POST /register
 app.post("/register", (req, res) => {
+  const newUserEmail = req.body.email;
+  const newUserPassword = req.body.password;
+
+  if (!newUserEmail || !newUserPassword) {
+    res.statusCode = 400;
+    res.send("Please provide both user email and password.");
+    return;
+  }
+
+  if (!userLookUp(newUserEmail)) {
+    res.statusCode = 400;
+    res.send("User already exist, please procced to login.");
+    return;
+  }
+
   const userId = generateRandomString(8);
   const userParameters = {
     id: userId,
-    email: req.body.email,
-    password: req.body.password
+    email: newUserEmail,
+    password: newUserPassword
   }
-  
   usersDatabase[userId] = userParameters;
 
   res.cookie("user_id", userId);
   res.redirect("/urls");
 });
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
