@@ -62,6 +62,10 @@ app.get("/urls", (req, res) => {
 // GET /urls/new
 app.get("/urls/new", (req, res) => {
   const user_id = req.cookies["user_id"];
+  if (!user_id) {
+    res.redirect("/login");
+    return;
+  }
   res.render("urls_new", { user: usersDatabase[user_id] });
 });
 // GET /urls/:shortURL_id
@@ -106,6 +110,18 @@ app.get("/register", (req, res) => {
 
 // POST /urls
 app.post("/urls", (req, res) => {
+  const user_id = req.cookies["user_id"];
+  if (!user_id) {
+    const errorParameters = {
+      user: usersDatabase[user_id],
+      code: 403,
+      message: "Please log in to create new short urls."
+    }
+    res.statusCode = 403;
+    res.render("error_page", errorParameters);
+    return;
+  }
+
   const randomId = generateRandomString(6);
   if (req.body.longURL) {
     urlDatabase[randomId] = req.body.longURL;
@@ -140,17 +156,28 @@ app.post("/urls/:shortURL_id/delete", (req, res) => {
 app.post("/login", (req, res) => {
   const userLoginEmail = req.body.email;
   const userLoginPassword = req.body.password;
+  const user_id = req.cookies["user_id"];
   const userFound = getUserByEmail(userLoginEmail);
 
   if (!userFound) {
+    const errorParameters = {
+      user: usersDatabase[user_id],
+      code: 403,
+      message: "User not found. Please register new user."
+    }
     res.statusCode = 403;
-    res.send("User not found. Please register new user.");
+    res.render("error_page", errorParameters);
     return;
   }
 
   if (userFound.password !== userLoginPassword) {
+    const errorParameters = {
+      user: usersDatabase[user_id],
+      code: 403,
+      message: "Invalid password. Please check your password details and try again."
+    }
     res.statusCode = 403;
-    res.send("Invalid password. Please check your password details and try again.");
+    res.render("error_page", errorParameters);
     return;
   }
 
@@ -166,16 +193,27 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const newUserEmail = req.body.email;
   const newUserPassword = req.body.password;
+  const user_id = req.cookies["user_id"];
 
   if (!newUserEmail || !newUserPassword) {
+    const errorParameters = {
+      user: usersDatabase[user_id],
+      code: 400,
+      message: "Please provide both user email and password."
+    }
     res.statusCode = 400;
-    res.send("Please provide both user email and password.");
+    res.render("error_page", errorParameters);
     return;
   }
 
   if (getUserByEmail(newUserEmail)) {
+    const errorParameters = {
+      user: usersDatabase[user_id],
+      code: 400,
+      message: "User already exist, please procced to login."
+    }
     res.statusCode = 400;
-    res.send("User already exist, please procced to login.");
+    res.render("error_page", errorParameters);
     return;
   }
 
