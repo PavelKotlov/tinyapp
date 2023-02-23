@@ -4,13 +4,19 @@ const morgan = require("morgan");
 const app = express();
 const PORT = 8080; // default port 8080
 
-// Execute app requirements
+// Config
 app.set("view engine", "ejs");
+
+// Middleware
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // App data
+const usersDatabase = {
+  
+};
+
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -100,6 +106,20 @@ app.post("/login", (req, res) => {
 // Logout button post request
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
+  res.redirect("/urls");
+});
+
+app.post("/register", (req, res) => {
+  const userId = generateRandomString(8);
+  const userParameters = {
+    id: userId,
+    email: req.body.email,
+    password: req.body.password
+  }
+  
+  usersDatabase[userId] = userParameters;
+
+  res.cookie("user_id", userId);
   res.redirect("/urls");
 });
 
