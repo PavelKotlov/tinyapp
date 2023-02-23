@@ -17,20 +17,31 @@
   </head>
   <body>
     <%- include('partials/_header') %>
-    <h1>Login</h1>
-    <form method="POST" action="/login">
-      <label for="email">Enter E-mail:</label>
-      <input
-        name="email"
-        type="email"
-      />
-      <label for="password">Enter Password:</label>
-      <input
-        name="password" 
-        type="password"
-      />
-      <button type="submit" class="btn btn-success">Login</button>
-    </form>
+    <main style="margin: 1em;">
+      <h3>Login</h3>
+      <p>Please provide your user details below and click login.</p>
+      <form class="form-inline" action="/login" method="POST">
+        <div class="form-group mb-2">
+          <label for="email">Enter E-mail:</label>
+          <input
+            class="form-control"
+            type="email"
+            name="email"
+            placeholder="e.g. johnsmith@email.com"
+            style="width: 300px; margin: 1em"
+          />
+          <label for="password">Enter Password:</label>
+          <input
+            class="form-control"
+            type="password"
+            name="password"
+            placeholder="e.g. B12h3jhu!"
+            style="width: 300px; margin: 1em"
+          />
+          <button type="submit" class="btn btn-success">Login</button>
+        </div>
+      </form>
+    </main>
 
     <!-- Bootstrap JS -->
     <script
