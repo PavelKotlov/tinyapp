@@ -83,14 +83,22 @@ app.get("/u/:shortURL_id", (req, res) => {
   const longURL = urlDatabase[shortURL_id];
   res.redirect(longURL);
 });
-// GET /register
+// GET /login
 app.get("/login", (req, res) => {
   const user_id = req.cookies["user_id"];
+  if (user_id) {
+    res.redirect("/urls");
+    return;
+  }
   res.render('login_page', { user: usersDatabase[user_id] });
 });
 // GET /register
 app.get("/register", (req, res) => {
   const user_id = req.cookies["user_id"];
+  if (user_id) {
+    res.redirect("/urls");
+    return;
+  }
   res.render('registration_page', { user: usersDatabase[user_id] });
 });
 
