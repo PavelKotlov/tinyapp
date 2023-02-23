@@ -26,7 +26,7 @@ const urlDatabase = {
 
 // Global Variables
 const generateRandomString = (length) => {
-  /* Convert random number into alphanumeric string using redix base 16. Return 
+  /* Convert random number into alphanumeric string using redix base 16. Return
   positions 2 - lenght + 2, not inclusive*/
   return Math.random().toString(16).slice(2, length + 2);
 };
@@ -53,9 +53,9 @@ app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
   
   const templateVars = {
-    user: usersDatabase[user_id], 
+    user: usersDatabase[user_id],
     urls: urlDatabase
-  }
+  };
 
   res.render("urls_index", templateVars);
 });
@@ -136,13 +136,13 @@ app.post("/login", (req, res) => {
 
   if (!userFound) {
     res.statusCode = 403;
-    res.send("User not found. Please register new user.")
+    res.send("User not found. Please register new user.");
     return;
   }
 
   if (userFound.password !== userLoginPassword) {
     res.statusCode = 403;
-    res.send("Invalid password. Please check your password details and try again.")
+    res.send("Invalid password. Please check your password details and try again.");
     return;
   }
 
@@ -176,7 +176,7 @@ app.post("/register", (req, res) => {
     id: userId,
     email: newUserEmail,
     password: newUserPassword
-  }
+  };
   usersDatabase[userId] = userParameters;
 
   res.cookie("user_id", userId);
