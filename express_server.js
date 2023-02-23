@@ -84,6 +84,11 @@ app.get("/u/:shortURL_id", (req, res) => {
   res.redirect(longURL);
 });
 // GET /register
+app.get("/login", (req, res) => {
+  const user_id = req.cookies["user_id"];
+  res.render('login_page', { user: usersDatabase[user_id] });
+});
+// GET /register
 app.get("/register", (req, res) => {
   const user_id = req.cookies["user_id"];
   res.render('registration_page', { user: usersDatabase[user_id] });
