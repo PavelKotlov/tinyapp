@@ -1,10 +1,12 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
+const morgan = require("morgan");
 const app = express();
 const PORT = 8080; // default port 8080
 
 // Execute app requirements
 app.set("view engine", "ejs");
+app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
@@ -39,6 +41,10 @@ app.get("/urls/:id", (req, res) => {
     longURL: urlDatabase[id]
   };
   res.render("urls_show", templateVars);
+});
+
+app.get("/register", (req, res) => {
+  res.render('registration_page', { username: req.cookies["username"] });
 });
 
 // Redirect link to external resource get request
