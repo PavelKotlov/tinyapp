@@ -33,7 +33,7 @@ const generateRandomString = (length) => {
 
 
 // Helper Functions
-const userLookUp = (email) => {
+const getUserByEmail = (email) => {
   for (const userId in usersDatabase) {
     if (usersDatabase[userId].email === email) {
       return usersDatabase[userId];
@@ -126,7 +126,8 @@ app.post("/urls/:shortURL_id/delete", (req, res) => {
 // POST /login
 app.post("/login", (req, res) => {
   const userLoginEmail = req.body.email;
-  const userFound = userLookUp(userLoginEmail);
+  const userFound = getUserByEmail(userLoginEmail);
+  console.log(userFound);
   if (userFound) {
     res.cookie("user_id", userFound.id);
   }
@@ -148,7 +149,7 @@ app.post("/register", (req, res) => {
     return;
   }
 
-  if (!userLookUp(newUserEmail)) {
+  if (getUserByEmail(newUserEmail)) {
     res.statusCode = 400;
     res.send("User already exist, please procced to login.");
     return;
