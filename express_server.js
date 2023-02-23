@@ -43,6 +43,15 @@ const getUserByEmail = (email) => {
   return null;
 };
 
+const getURLById = (urlId) => {
+  for (const URL in urlDatabase) {
+    if (URL === urlId) {
+      return true;
+    }
+  }
+
+  return null;
+};
 
 
 // Route handlers
@@ -73,6 +82,17 @@ app.get("/urls/:shortURL_id", (req, res) => {
   const shortURL_id = req.params.shortURL_id;
   const user_id = req.cookies["user_id"];
   
+  if (!getURLById(shortURL_id)) {
+    const errorParameters = {
+      user: usersDatabase[user_id],
+      code: 400,
+      message: "Invalid short URL id."
+    }
+    res.statusCode = 400;
+    res.render("error_page", errorParameters);
+    return;
+  }
+
   const templateVars = {
     user: usersDatabase[user_id],
     shortURL_id: shortURL_id,
@@ -85,6 +105,19 @@ app.get("/urls/:shortURL_id", (req, res) => {
 app.get("/u/:shortURL_id", (req, res) => {
   const shortURL_id = req.params.shortURL_id;
   const longURL = urlDatabase[shortURL_id];
+  const user_id = req.cookies["user_id"];
+  
+  if (!getURLById(shortURL_id)) {
+    const errorParameters = {
+      user: usersDatabase[user_id],
+      code: 302,
+      message: "Invalid short URL id."
+    }
+    res.statusCode = 302;
+    res.render("error_page", errorParameters);
+    return;
+  }
+
   res.redirect(longURL);
 });
 // GET /login
