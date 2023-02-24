@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const cookieSession = require('cookie-session');
 const morgan = require("morgan");
+const helpers = require("./helpers.js");
 const app = express();
 const PORT = 8080; // default port 8080
 
@@ -22,47 +23,6 @@ app.use(cookieSession({
 // App data
 const usersDatabase = {};
 const urlDatabase = {};
-
-
-// Global Variables
-const generateRandomString = (length) => {
-  /* Convert random number into alphanumeric string using redix base 16. Return
-  positions 2 - lenght + 2, not inclusive*/
-  return Math.random().toString(16).slice(2, length + 2);
-};
-
-
-// Helper Functions
-const getUserByEmail = (email) => {
-  for (const userId in usersDatabase) {
-    if (usersDatabase[userId].email === email) {
-      return usersDatabase[userId];
-    }
-  }
-
-  return null;
-};
-
-const confirmURLById = (urlID) => {
-  for (const URL in urlDatabase) {
-    if (URL === urlID) {
-      return true;
-    }
-  }
-
-  return null;
-};
-
-const urlsForUser = (user_id) => {
-  const userURLs = {};
-  for (const url in urlDatabase) {
-    if (urlDatabase[url].userID === user_id) {
-      userURLs[url] = urlDatabase[url];
-    }
-  }
-
-  return userURLs;
-};
 
 
 // Route handlers
@@ -94,7 +54,7 @@ app.get("/urls", (req, res) => {
 
   const templateVars = {
     user: usersDatabase[user_id],
-    urls: urlsForUser(user_id)
+    urls: helpers.urlsForUser(user_id, urlDatabase)
   };
 
   res.render("urls_index", templateVars);
@@ -125,7 +85,7 @@ app.get("/urls/:id", (req, res) => {
     return;
   }
   
-  if (!confirmURLById(id) || !urlsForUser(user_id)[id]) {
+  if (!helpers.confirmURLById(id, urlDatabase) || !helpers.urlsForUser(user_id, urlDatabase)[id]) {
     const errorParameters = {
       user: usersDatabase[user_id],
       code: 400,
@@ -140,7 +100,7 @@ app.get("/urls/:id", (req, res) => {
   const templateVars = {
     user: usersDatabase[user_id],
     id: id,
-    longURL: urlsForUser(user_id)[id].longURL
+    longURL: helpers.urlsForUser(user_id, urlDatabase)[id].longURL
   };
   
   res.render("urls_show", templateVars);
@@ -150,7 +110,7 @@ app.get("/u/:id", (req, res) => {
   const id = req.params.id;
   const user_id = req.session.user_id;
 
-  if (!confirmURLById(id)) {
+  if (!helpers.confirmURLById(id, urlDatabase)) {
     const errorParameters = {
       user: usersDatabase[user_id],
       code: 400,
@@ -198,7 +158,7 @@ app.post("/urls", (req, res) => {
     return;
   }
 
-  const randomId = generateRandomString(6);
+  const randomId = helpers.generateRandomString(6);
   urlDatabase[randomId] = {
     longURL: req.body.longURL,
     userID: user_id
@@ -222,7 +182,7 @@ app.post("/urls/:id", (req, res) => {
     return;
   }
 
-  if (!confirmURLById(id)) {
+  if (!helpers.confirmURLById(id, urlDatabase)) {
     const errorParameters = {
       user: usersDatabase[user_id],
       code: 400,
@@ -253,7 +213,7 @@ app.post("/urls/:id/delete", (req, res) => {
     return;
   }
 
-  if (!urlsForUser(user_id)[id]) {
+  if (!helpers.urlsForUser(user_id, urlDatabase)[id]) {
     const errorParameters = {
       user: usersDatabase[user_id],
       code: 400,
@@ -271,7 +231,18 @@ app.post("/urls/:id/delete", (req, res) => {
 app.post("/login", (req, res) => {
   const userLoginEmail = req.body.email;
   const userLoginPassword = req.body.password;
-  const userFound = getUserByEmail(userLoginEmail);
+  const userFound = helpers.getUserByEmail(userLoginEmail, usersDatabase);
+
+  if (!userLoginEmail || !userLoginPassword) {
+    const errorParameters = {
+      user: null,
+      code: 400,
+      message: "Please provide both user email and password."
+    };
+    res.statusCode = 400;
+    res.render("error_page", errorParameters);
+    return;
+  }
 
   if (!userFound) {
     const errorParameters = {
@@ -284,7 +255,7 @@ app.post("/login", (req, res) => {
     return;
   }
   
-  bcrypt.compare(userLoginPassword, userFound.password)
+  bcrypt.compare(userLoginPassword, usersDatabase[userFound].password)
     .then(function(result) {
       if (!result) {
         const errorParameters = {
@@ -297,7 +268,7 @@ app.post("/login", (req, res) => {
         return;
       }
 
-      req.session.user_id = userFound.id;
+      req.session.user_id = usersDatabase[userFound].id;
       res.redirect("/urls");
     });
 });
@@ -322,7 +293,7 @@ app.post("/register", (req, res) => {
     return;
   }
 
-  if (getUserByEmail(newUserEmail)) {
+  if (helpers.getUserByEmail(newUserEmail, usersDatabase)) {
     const errorParameters = {
       user: null,
       code: 400,
@@ -338,7 +309,7 @@ app.post("/register", (req, res) => {
       return bcrypt.hash(newUserPassword, salt);
     })
     .then((hash) => {
-      const userId = generateRandomString(8);
+      const userId = helpers.generateRandomString(8);
       const userParameters = {
         id: userId,
         email: newUserEmail,
