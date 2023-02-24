@@ -35,7 +35,7 @@ const urlsForUser = (user_id, database) => {
     }
   }
 
-  return Object.keys(userURLs).length > 0 ? userURLs: null;
+  return Object.keys(userURLs).length > 0 ? userURLs : null;
 };
 
 const helpers = {

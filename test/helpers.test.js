@@ -3,24 +3,24 @@ const helpers = require('../helpers.js');
 
 const testUsers = {
   "userRandomID": {
-    id: "userRandomID", 
-    email: "user@example.com", 
+    id: "userRandomID",
+    email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
   "user2RandomID": {
-    id: "user2RandomID", 
-    email: "user2@example.com", 
+    id: "user2RandomID",
+    email: "user2@example.com",
     password: "dishwasher-funk"
   }
 };
 
 const urlDatabase = {
   "86w5yt": {
-    longURL: "http://www.bing.com", 
+    longURL: "http://www.bing.com",
     userID: "user2RandomID"
   },
   "86dfb7": {
-    longURL: "http://www.google.com", 
+    longURL: "http://www.google.com",
     userID: "userRandomID"
   }
 };
@@ -89,10 +89,10 @@ describe('urlsForUser', function() {
     const userURLS = helpers.urlsForUser("userRandomID", urlDatabase);
     const expectedResult = {
       "86dfb7": {
-      longURL: "http://www.google.com", 
-      userID: "userRandomID"
+        longURL: "http://www.google.com",
+        userID: "userRandomID"
       }
-    }
+    };
     assert.deepEqual(userURLS, expectedResult);
   });
 
