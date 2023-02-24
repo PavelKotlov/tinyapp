@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const morgan = require("morgan");
 const app = express();
 const PORT = 8080; // default port 8080
@@ -13,7 +13,10 @@ app.set("view engine", "ejs");
 // Middleware
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['fhgjfhgks'],
+}));
 
 
 // App data
@@ -67,7 +70,7 @@ const urlsForUser = (user_id) => {
 
 // GET /
 app.get("/", (req, res) => {
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
   if (user_id) {
     return res.redirect("/urls");
   }
@@ -76,7 +79,7 @@ app.get("/", (req, res) => {
 });
 // GET /urls
 app.get("/urls", (req, res) => {
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
 
   if (!user_id) {
     const errorParameters = {
@@ -99,7 +102,7 @@ app.get("/urls", (req, res) => {
 });
 // GET /urls/new
 app.get("/urls/new", (req, res) => {
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
   if (!user_id) {
     return res.redirect("/login");
   }
@@ -109,7 +112,7 @@ app.get("/urls/new", (req, res) => {
 // GET /urls/:id
 app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
 
   if (!user_id) {
     const errorParameters = {
@@ -145,7 +148,7 @@ app.get("/urls/:id", (req, res) => {
 // GET /u/:id
 app.get("/u/:id", (req, res) => {
   const id = req.params.id;
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
 
   if (!confirmURLById(id)) {
     const errorParameters = {
@@ -162,7 +165,7 @@ app.get("/u/:id", (req, res) => {
 });
 // GET /login
 app.get("/login", (req, res) => {
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
   if (user_id) {
     res.redirect("/urls");
     return;
@@ -171,7 +174,7 @@ app.get("/login", (req, res) => {
 });
 // GET /register
 app.get("/register", (req, res) => {
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
   if (user_id) {
     res.redirect("/urls");
     return;
@@ -183,7 +186,7 @@ app.get("/register", (req, res) => {
 
 // POST /urls
 app.post("/urls", (req, res) => {
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
   if (!user_id) {
     const errorParameters = {
       user: usersDatabase[user_id],
@@ -206,7 +209,7 @@ app.post("/urls", (req, res) => {
 // POST /urls/:id
 app.post("/urls/:id", (req, res) => {
   const id = req.params.id;
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
   
   if (!user_id) {
     const errorParameters = {
@@ -237,7 +240,7 @@ app.post("/urls/:id", (req, res) => {
 // POST /urls/:id/delete
 app.post("/urls/:id/delete", (req, res) => {
   const id = req.params.id;
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
   
   if (!user_id) {
     const errorParameters = {
@@ -268,12 +271,11 @@ app.post("/urls/:id/delete", (req, res) => {
 app.post("/login", (req, res) => {
   const userLoginEmail = req.body.email;
   const userLoginPassword = req.body.password;
-  const user_id = req.cookies["user_id"];
   const userFound = getUserByEmail(userLoginEmail);
 
   if (!userFound) {
     const errorParameters = {
-      user: usersDatabase[user_id],
+      user: null,
       code: 403,
       message: "User not found. Please register new user."
     };
@@ -286,7 +288,7 @@ app.post("/login", (req, res) => {
     .then(function(result) {
       if (!result) {
         const errorParameters = {
-          user: usersDatabase[user_id],
+          user: null,
           code: 403,
           message: "Invalid password. Please check your password details and try again."
         };
@@ -295,24 +297,23 @@ app.post("/login", (req, res) => {
         return;
       }
 
-      res.cookie("user_id", userFound.id);
+      req.session.user_id = userFound.id;
       res.redirect("/urls");
     });
 });
 // POST /logout
 app.post("/logout", (req, res) => {
-  res.clearCookie("user_id");
+  req.session = null;
   res.redirect("/login");
 });
 // POST /register
 app.post("/register", (req, res) => {
   const newUserEmail = req.body.email;
   const newUserPassword = req.body.password;
-  const user_id = req.cookies["user_id"];
 
   if (!newUserEmail || !newUserPassword) {
     const errorParameters = {
-      user: usersDatabase[user_id],
+      user: null,
       code: 400,
       message: "Please provide both user email and password."
     };
@@ -323,7 +324,7 @@ app.post("/register", (req, res) => {
 
   if (getUserByEmail(newUserEmail)) {
     const errorParameters = {
-      user: usersDatabase[user_id],
+      user: null,
       code: 400,
       message: "User already exist, please procced to login."
     };
@@ -346,8 +347,7 @@ app.post("/register", (req, res) => {
 
       usersDatabase[userId] = userParameters;
 
-      res.cookie("user_id", userId);
-      res.redirect("/urls");
+      res.redirect("/login");
     });
 });
 
