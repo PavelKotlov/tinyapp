@@ -78,12 +78,12 @@ app.get("/", (req, res) => {
 app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
 
-  if(!user_id) {
+  if (!user_id) {
     const errorParameters = {
       user: usersDatabase[user_id],
       code: 401,
       message: "Unautorized access. Please login or register to access."
-    }
+    };
     res.statusCode = 401;
     res.render("error_page", errorParameters);
     return;
@@ -116,7 +116,7 @@ app.get("/urls/:id", (req, res) => {
       user: usersDatabase[user_id],
       code: 401,
       message: "Unautorized access. Please login or register to access."
-    }
+    };
     res.statusCode = 401;
     res.render("error_page", errorParameters);
     return;
@@ -127,7 +127,7 @@ app.get("/urls/:id", (req, res) => {
       user: usersDatabase[user_id],
       code: 400,
       message: "URL does not exist, please create new short URL."
-    }
+    };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
     return;
@@ -152,7 +152,7 @@ app.get("/u/:id", (req, res) => {
       user: usersDatabase[user_id],
       code: 400,
       message: "Invalid short URL id."
-    }
+    };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
     return;
@@ -189,7 +189,7 @@ app.post("/urls", (req, res) => {
       user: usersDatabase[user_id],
       code: 401,
       message: "Please log in to create new short urls."
-    }
+    };
     res.statusCode = 401;
     res.render("error_page", errorParameters);
     return;
@@ -199,7 +199,7 @@ app.post("/urls", (req, res) => {
   urlDatabase[randomId] = {
     longURL: req.body.longURL,
     userID: user_id
-  }
+  };
 
   res.redirect(`/urls/${randomId}`);
 });
@@ -213,7 +213,7 @@ app.post("/urls/:id", (req, res) => {
       user: usersDatabase[user_id],
       code: 401,
       message: "Please log in to edit exisitng urls."
-    }
+    };
     res.statusCode = 401;
     res.render("error_page", errorParameters);
     return;
@@ -224,7 +224,7 @@ app.post("/urls/:id", (req, res) => {
       user: usersDatabase[user_id],
       code: 400,
       message: "Invalid short URL id."
-    }
+    };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
     return;
@@ -244,7 +244,7 @@ app.post("/urls/:id/delete", (req, res) => {
       user: usersDatabase[user_id],
       code: 401,
       message: "Please log in to delete existing urls."
-    }
+    };
     res.statusCode = 401;
     res.render("error_page", errorParameters);
     return;
@@ -255,7 +255,7 @@ app.post("/urls/:id/delete", (req, res) => {
       user: usersDatabase[user_id],
       code: 400,
       message: "Invalid short URL id."
-    }
+    };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
     return;
@@ -276,28 +276,28 @@ app.post("/login", (req, res) => {
       user: usersDatabase[user_id],
       code: 403,
       message: "User not found. Please register new user."
-    }
+    };
     res.statusCode = 403;
     res.render("error_page", errorParameters);
     return;
   }
   
   bcrypt.compare(userLoginPassword, userFound.password)
-  .then(function(result) {
-    if (!result) {
-      const errorParameters = {
-        user: usersDatabase[user_id],
-        code: 403,
-        message: "Invalid password. Please check your password details and try again."
+    .then(function(result) {
+      if (!result) {
+        const errorParameters = {
+          user: usersDatabase[user_id],
+          code: 403,
+          message: "Invalid password. Please check your password details and try again."
+        };
+        res.statusCode = 403;
+        res.render("error_page", errorParameters);
+        return;
       }
-      res.statusCode = 403;
-      res.render("error_page", errorParameters);
-      return;
-    }
 
-    res.cookie("user_id", userFound.id);
-    res.redirect("/urls");
-  });
+      res.cookie("user_id", userFound.id);
+      res.redirect("/urls");
+    });
 });
 // POST /logout
 app.post("/logout", (req, res) => {
@@ -315,7 +315,7 @@ app.post("/register", (req, res) => {
       user: usersDatabase[user_id],
       code: 400,
       message: "Please provide both user email and password."
-    }
+    };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
     return;
@@ -326,29 +326,29 @@ app.post("/register", (req, res) => {
       user: usersDatabase[user_id],
       code: 400,
       message: "User already exist, please procced to login."
-    }
+    };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
     return;
   }
 
   bcrypt.genSalt(10)
-  .then((salt) => {
-    return bcrypt.hash(newUserPassword, salt);
-  })
-  .then((hash) => {
-    const userId = generateRandomString(8)
-    const userParameters = {
-      id: userId,
-      email: newUserEmail,
-      password: hash
-    };
+    .then((salt) => {
+      return bcrypt.hash(newUserPassword, salt);
+    })
+    .then((hash) => {
+      const userId = generateRandomString(8);
+      const userParameters = {
+        id: userId,
+        email: newUserEmail,
+        password: hash
+      };
 
-    usersDatabase[userId] = userParameters;
+      usersDatabase[userId] = userParameters;
 
-    res.cookie("user_id", userId);
-    res.redirect("/urls");
-  });
+      res.cookie("user_id", userId);
+      res.redirect("/urls");
+    });
 });
 
 
