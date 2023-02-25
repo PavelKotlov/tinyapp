@@ -85,7 +85,7 @@ app.get("/urls/:id", (req, res) => {
     return;
   }
   
-  if (!helpers.confirmURLById(id, urlDatabase) || !helpers.urlsForUser(user_id, urlDatabase)[id]) {
+  if (!helpers.confirmURLById(id, helpers.urlsForUser(user_id, urlDatabase))) {
     const errorParameters = {
       user: usersDatabase[user_id],
       code: 400,
@@ -317,8 +317,8 @@ app.post("/register", (req, res) => {
       };
 
       usersDatabase[userId] = userParameters;
-
-      res.redirect("/login");
+      req.session.user_id = usersDatabase[userId].id;
+      res.redirect("/urls");
     });
 });
 
