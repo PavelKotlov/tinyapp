@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
     return res.redirect("/urls");
   }
   
-  res.redirect("/user/login");
+  res.redirect("/users/login");
 });
 
 // GET /login
@@ -84,7 +84,7 @@ router.post("/login", (req, res) => {
 // POST /logout
 router.post("/logout", (req, res) => {
   req.session = null;
-  res.redirect("/user/login");
+  res.redirect("/users/login");
 });
 
 // POST /register

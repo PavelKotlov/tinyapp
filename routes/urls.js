@@ -30,7 +30,7 @@ router.get("/", (req, res) => {
 router.get("/new", (req, res) => {
   const user_id = req.session.user_id;
   if (!user_id) {
-    return res.redirect("/user/login");
+    return res.redirect("/users/login");
   }
 
   res.render("urls_new", { user: usersDatabase[user_id] });
