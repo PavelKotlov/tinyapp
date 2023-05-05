@@ -2,7 +2,7 @@ const express = require("express");
 const cookieSession = require('cookie-session');
 const morgan = require("morgan");
 const app = express();
-const PORT = 8080; // default port 8080
+const PORT = 8080;
 
 // Config
 app.set("view engine", "ejs");
