@@ -25,6 +25,12 @@ router.get("/login", (req, res) => {
   res.render('login_page', { user: usersDatabase[user_id] });
 });
 
+// GET /logout
+router.get("/logout", (req, res) => {
+  req.session = null;
+  res.redirect("/users/login");
+});
+
 // GET /register
 router.get("/register", (req, res) => {
   const user_id = req.session.user_id;
@@ -79,12 +85,6 @@ router.post("/login", (req, res) => {
       req.session.user_id = usersDatabase[userFound].id;
       res.redirect("/urls");
     });
-});
-
-// POST /logout
-router.post("/logout", (req, res) => {
-  req.session = null;
-  res.redirect("/users/login");
 });
 
 // POST /register
