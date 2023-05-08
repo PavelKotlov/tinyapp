@@ -17,7 +17,7 @@
   </head>
   <body>
     <%- include('partials/_header') %>
-    <main class="container d-flex flex-column justify-content-start align-items-center vh-100">
+    <main class="container d-flex flex-column justify-content-start align-items-center">
       <p class="h3 my-4">Create Account</p>
       <form class="form-group col-sm-12 col-md-8" action="/users/register" method="POST">
         <div class="form-group">
@@ -25,7 +25,7 @@
           <input 
             name="email" 
             type="email" 
-            class="form-control " 
+            class="form-control" 
             id="email" 
             aria-describedby="emailHelp" 
             placeholder="Enter email"
