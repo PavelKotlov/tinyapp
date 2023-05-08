@@ -19,19 +19,18 @@
 
   <body>
     <%- include('partials/_header') %>
-    <main style="margin: 1em;">
-      <h3>Create TinyURL</h3>
-      <form class="form-inline" action="/urls" method="POST">
-        <div class="form-group mb-2">
+    <main class="container d-flex flex-column justify-content-start align-items-center">
+      <p class="h3 my-4">Create TinyURL</p>
+      <form class="form-group col-sm-12 col-md-8" action="/urls" method="POST">
+        <div class="form-group">
           <label for="longURL">Enter a URL:</label>
           <input
             class="form-control"
             type="text"
             name="longURL"
-            placeholder="http://"
-            style="width: 300px; margin: 1em"
+            placeholder="https://"
           />
-          <button type="submit" class="btn btn-success">Submit</button>
+          <button type="submit" class="btn btn-success my-4">Submit</button>
         </div>
       </form>
     </main>
