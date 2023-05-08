@@ -17,19 +17,18 @@
   </head>
   <body>
     <%- include('partials/_header') %>
-    <main style="margin: 1em;">
-      <h3>Create Account</h3>
-      <form class="form-group" action="/users/register" method="POST">
+    <main class="container d-flex flex-column justify-content-start align-items-center vh-100">
+      <p class="h3 my-4">Create Account</p>
+      <form class="form-group col-sm-12 col-md-8" action="/users/register" method="POST">
         <div class="form-group">
           <label for="email">Email address</label>
           <input 
             name="email" 
             type="email" 
-            class="form-control" 
+            class="form-control " 
             id="email" 
             aria-describedby="emailHelp" 
             placeholder="Enter email"
-            style="width: 300px;"
           >
         </div>
         <div class="form-group">
@@ -40,10 +39,9 @@
           class="form-control" 
           id="password" 
           placeholder="Password"
-          style="width: 300px;"
         >
         </div>
-        <button type="submit" class="btn btn-success">Register</button>
+        <button type="submit" class="btn btn-success my-4">Register</button>
       </form>
     </main>
 
