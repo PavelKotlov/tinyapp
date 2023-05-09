@@ -27,13 +27,37 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - [⚠️ Disclaimer](#️-disclaimer)
 
 ## 🌟 Features
+- Register, login, and logout users.
+- View, create, edit, and delete short URLs.
+- User passwords and sessions are encrypted.
+ 
 ## 🚀 Getting Started
 - Fork the repository.
 - Install all dependencies using the `npm install` command.
 - Run the server using the `npm start` command.
+- Visit http://127.0.0.1:8080 or [localhost:8080](http://localhost:8080) in your browser (port defaults to 8080).
 - Now you can register and start creating short urls.
 
 ## ⚫ Endpoints
+- Base URL : http://127.0.0.1:8080
+
+| <b> Http method </b> | path                             | Description                                                                             |
+| :------------------: | :------------------------------: | :-------------------------------------------------------------------------------------: |
+| `GET`                | `/`                              | Gets index page and redirects to login page, unless logged in then to urls page         |
+| `GET`                | `/users`                         | Gets urls page if user is logged in, else redirects to login page                       |
+| `GET`                | `/users/login`                   | Gets login page, unless logged in then redirects to urls page                           |
+| `GET`                | `/users/logout`                  | Gets login page and sets session to null                                                |
+| `GET`                | `/users/register`                | Gets registration page, unless logged in then redirects to urls page                    |
+| `POST`               | `/users/login`                   | Verifies user credentials and if succesful starts a session                             |
+| `POST`               | `/users/register`                | Creates a new user, starts a session, and redirects to urls page                        |
+| `GET`                | `/urls`                          | Gets urls index page and all the urls for the authorized user                           |
+| `GET`                | `/urls/new`                      | Gets urls new page for the authorized user                                              |
+| `GET`                | `/urls/:id`                      | Gets urls show page for a specific url for the authorized user                          |
+| `GET`                | `/u/:id`                         | Edits a card for a specific topic for the authorized user                               |
+| `POST`               | `/urls`                          | Create a new short URL and redirect to the urls show page                               |
+| `POST`               | `/urls/:id`                      | Edits a short URL for the authorized user                                               |
+| `POST`               | `/urls/:id/delete`               | Delete a short URL for the authorized user                                              |
+
 ## 🧱 Main Structure
 ```sh
 ├─── db                 # hardcoded database to hold user and url data
@@ -65,12 +89,4 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - [Nodemon](https://www.npmjs.com/package/nodemon)
 
 ## ⚠️ Disclaimer
-- This is a project for [LHL web development bootcamp](https://www.lighthouselabs.ca/) and is not meant for production use
-
-## Final Product
-![TinyApp-Register](https://user-images.githubusercontent.com/107829745/221115636-045efc86-1b8e-4d79-8151-c59afd9403c7.JPG)
-![TinyApp-Login](https://user-images.githubusercontent.com/107829745/221115631-aa398fae-9205-4531-9efa-814a40a9cf11.JPG)
-![TinyApp-New](https://user-images.githubusercontent.com/107829745/221115633-ec912828-3037-4f58-aedb-88eccc1cfe96.JPG)
-![TinyApp-URLs](https://user-images.githubusercontent.com/107829745/221115639-1abe4a73-21b1-48fe-be4b-6f937d2c1df2.JPG)
-![TinyApp-Edit](https://user-images.githubusercontent.com/107829745/221115627-29b56c02-8470-4031-9051-1e1523c80773.JPG)
-![TinyApp-Error](https://user-images.githubusercontent.com/107829745/221115630-d362ce54-e9e5-4960-a94f-554c37b35fc2.JPG)
+- This is a project for [LHL web development bootcamp](https://www.lighthouselabs.ca/) and is not meant for production use.
