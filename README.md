@@ -32,11 +32,11 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - User passwords and sessions are encrypted.
  
 ## 🚀 Getting Started
-- Fork the repository.
-- Install all dependencies using the `npm install` command.
-- Run the server using the `npm start` command.
-- Visit http://127.0.0.1:8080 or [localhost:8080](http://localhost:8080) in your browser (port defaults to 8080).
-- Now you can register and start creating short urls.
+1. Fork the repository.
+2. Install all dependencies using the `npm install` command.
+3. Run the server using the `npm start` command.
+4. Visit http://127.0.0.1:8080 or [localhost:8080](http://localhost:8080) in your browser (port defaults to 8080).
+5. Now you can register and start creating short URLs.
 
 ## ⚫ Endpoints
 - Base URL : http://127.0.0.1:8080
