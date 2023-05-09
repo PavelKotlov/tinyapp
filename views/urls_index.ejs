@@ -14,13 +14,14 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
+
     <title>TinyApp - MyURLs</title>
   </head>
   <body>
     <%- include('partials/_header') %>
-    <main style="margin: 1em;">
-      <h3>My URLs</h3>
-      <table class="table">
+    <main class="container d-flex flex-column justify-content-start align-items-center">
+      <p class="h3 my-4">My URLs</p>
+      <table class="table table-bordered table-hover table-responsive-sm">
         <thead>
           <tr>
             <th scope="col">Short URL ID</th>
@@ -48,8 +49,8 @@
           <% } %>
         </tbody>
       </table>
-
     </main>
+
     <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
