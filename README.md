@@ -35,10 +35,24 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## ⚫ Endpoints
 ## 🧱 Main Structure
+```sh
+├─── db                 # hardcoded database to hold user and url data
+├─── helpers            # helper functions
+├─── routes             # app routes
+├─── test               # helper functions tests
+├─── views              # EJS templates
+│  ├── partials         # EJS template partials
+├─── .gitignore
+├─── README.md
+├─── package-lock.json
+├─── package.json
+└─── server.js          # the server: the main driver of the app includes all the routes and server configs
+```
+
 ## 📦 Tech Stack (Dependencies)
 
-### 🔨 Dependencies
-- [Express.js](express.js)
+### 🔨 Stack
+- [Express.js](https://www.npmjs.com/package/express)
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - [Cookie-Session](https://www.npmjs.com/package/cookie-session)
 - [EJS](https://www.npmjs.com/package/ejs)
