@@ -22,7 +22,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - [⚫ Endpoints](#-endpoints)
 - [🧱 Main Structure](#-main-structure)
 - [📦 Tech Stack (Dependencies)](#-tech-stack-dependencies)
-  - [🔨 Dependencies](#-backend)
+  - [🔨 Dependencies](#-Dependencies)
   - [🧰 Development Dependencies](#-development-dependencies)
 - [⚠️ Disclaimer](#️-disclaimer)
 
@@ -75,7 +75,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## 📦 Tech Stack (Dependencies)
 
-### 🔨 Stack
+### 🔨 Dependencies
 - [Express.js](https://www.npmjs.com/package/express)
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - [Cookie-Session](https://www.npmjs.com/package/cookie-session)
