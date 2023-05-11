@@ -19,7 +19,9 @@
   </head>
   <body>
     <%- include('partials/_header') %>
-    <main class="container d-flex flex-column justify-content-start align-items-center">
+    <main
+      class="container d-flex flex-column justify-content-start align-items-center"
+    >
       <p class="h3 my-4">My URLs</p>
       <table class="table table-bordered table-hover table-responsive-sm">
         <thead>
@@ -32,20 +34,22 @@
         </thead>
         <tbody>
           <% for (let id in urls) { %>
-            <tr>
-              <td><%= id %></td>
-              <td><%= urls[id].longURL %></td>
-              <td>
-                <form action="/urls/<%= id %>" method="GET">
-                  <button type="submit" class="btn btn-success">Edit</button>
-                </form>
-              </td>
-              <td>
-                <form action="/urls/<%= id %>/delete" method="POST">
-                <button type="submit" class="btn btn-outline-danger">Delete</button>
-                </form>
-              </td>
-            </tr>
+          <tr>
+            <td><a href="/urls/u/<%= id %>"><%= id %></a></td>
+            <td><%= urls[id].longURL %></td>
+            <td>
+              <form action="/urls/<%= id %>" method="GET">
+                <button type="submit" class="btn btn-success">Edit</button>
+              </form>
+            </td>
+            <td>
+              <form action="/urls/<%= id %>/delete" method="POST">
+                <button type="submit" class="btn btn-outline-danger">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
           <% } %>
         </tbody>
       </table>

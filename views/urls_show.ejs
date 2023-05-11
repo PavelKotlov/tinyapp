@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <!-- Bootstrap CSS -->
     <link
@@ -17,27 +17,26 @@
   </head>
   <body>
     <%- include('partials/_header') %>
-    <main class="container d-flex flex-column justify-content-start align-items-center">
-        <p class="h3 my-4">TinyURL for: <%= longURL %></p>
-        <p>
-          Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
-        </p>
-        <form class="form-group col-sm-12 col-md-8" action="/urls/<%= id %>/" method="POST">
-          <label>New URL:</label>
-          <input 
-            class="form-control" 
-            name="longURL" 
-            type="text"
-            value="<%= longURL %>"
-          />
-          <input 
-            class="form-control" 
-            name="id" 
-            type="hidden" 
-            value="<%= id%>"
-          />
-          <button type="submit" class="btn btn-success my-4">Edit</button>
-        </form>
+    <main
+      class="container d-flex flex-column justify-content-start align-items-center"
+    >
+      <p class="h3 my-4">TinyURL for: <%= longURL %></p>
+      <p>Short URL ID: <a href="/urls/u/<%= id %>"><%= id %></a></p>
+      <form
+        class="form-group col-sm-12 col-md-8"
+        action="/urls/<%= id %>/"
+        method="POST"
+      >
+        <label>New URL:</label>
+        <input
+          class="form-control"
+          name="longURL"
+          type="text"
+          value="<%= longURL %>"
+        />
+        <input class="form-control" name="id" type="hidden" value="<%= id%>" />
+        <button type="submit" class="btn btn-success my-4">Edit</button>
+      </form>
     </main>
 
     <!-- Bootstrap JS -->
