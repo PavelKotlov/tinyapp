@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const helpers = require("../helpers/helpers.js");
-const {usersDatabase} = require('../db/data.js');
+const { usersDatabase } = require("../db/data.js");
 
 // GET /
 router.get("/", (req, res) => {
@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
   if (user_id) {
     return res.redirect("/urls");
   }
-  
+
   res.redirect("/users/login");
 });
 
@@ -21,8 +21,8 @@ router.get("/login", (req, res) => {
     res.redirect("/urls");
     return;
   }
-  
-  res.render('login_page', { user: usersDatabase[user_id] });
+
+  res.render("login_page", { user: usersDatabase[user_id] });
 });
 
 // GET /logout
@@ -38,7 +38,7 @@ router.get("/register", (req, res) => {
     res.redirect("/urls");
     return;
   }
-  res.render('registration_page', { user: usersDatabase[user_id] });
+  res.render("registration_page", { user: usersDatabase[user_id] });
 });
 
 // POST /login
@@ -51,7 +51,7 @@ router.post("/login", (req, res) => {
     const errorParameters = {
       user: null,
       code: 400,
-      message: "Please provide both user email and password."
+      message: "Please provide both user email and password.",
     };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
@@ -62,20 +62,22 @@ router.post("/login", (req, res) => {
     const errorParameters = {
       user: null,
       code: 403,
-      message: "User not found. Please register new user."
+      message: "User not found. Please register new user.",
     };
     res.statusCode = 403;
     res.render("error_page", errorParameters);
     return;
   }
-  
-  bcrypt.compare(userLoginPassword, usersDatabase[userFound].password)
-    .then(function(result) {
+
+  bcrypt
+    .compare(userLoginPassword, usersDatabase[userFound].password)
+    .then(function (result) {
       if (!result) {
         const errorParameters = {
           user: null,
           code: 403,
-          message: "Invalid password. Please check your password details and try again."
+          message:
+            "Invalid password. Please check your password details and try again.",
         };
         res.statusCode = 403;
         res.render("error_page", errorParameters);
@@ -96,7 +98,7 @@ router.post("/register", (req, res) => {
     const errorParameters = {
       user: null,
       code: 400,
-      message: "Please provide both user email and password."
+      message: "Please provide both user email and password.",
     };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
@@ -107,14 +109,15 @@ router.post("/register", (req, res) => {
     const errorParameters = {
       user: null,
       code: 400,
-      message: "User already exist, please procced to login."
+      message: "User already exist, please procced to login.",
     };
     res.statusCode = 400;
     res.render("error_page", errorParameters);
     return;
   }
 
-  bcrypt.genSalt(10)
+  bcrypt
+    .genSalt(10)
     .then((salt) => {
       return bcrypt.hash(newUserPassword, salt);
     })
@@ -123,7 +126,7 @@ router.post("/register", (req, res) => {
       const userParameters = {
         id: userId,
         email: newUserEmail,
-        password: hash
+        password: hash,
       };
 
       usersDatabase[userId] = userParameters;
@@ -132,4 +135,4 @@ router.post("/register", (req, res) => {
     });
 });
 
-module.exports = router
+module.exports = router;
