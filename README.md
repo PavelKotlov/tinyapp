@@ -27,10 +27,16 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - [⚠️ Disclaimer](#️-disclaimer)
 
 ## 🌟 Features
-- Register, login, and logout users.
-- View, create, edit, and delete short URLs.
-- User passwords and sessions are encrypted.
- 
+#### Register, login, and logout users.
+<img alt="reg, login, logout" src="https://github.com/PavelKotlov/tinyapp/assets/107829745/adebdfa0-d895-44e4-8d08-d65a865eeefd" width="512:288"/>
+
+#### View, create, edit, and delete short URLs.
+<img alt="short-urls" src="https://github.com/PavelKotlov/tinyapp/assets/107829745/50f6a05e-6c4b-4e34-9285-2d07aa667222" width="512:288"/>
+
+#### User passwords and sessions are encrypted.
+<img alt="session" src="https://github.com/PavelKotlov/tinyapp/assets/107829745/a472a0da-fee1-4dc3-a4fd-ab62976552ad" width="512:288"/>
+
+
 ## 🚀 Getting Started
 1. Fork the repository.
 2. Install all dependencies using the `npm install` command.
